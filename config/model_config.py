@@ -25,6 +25,10 @@ class ModelConfig:
     d_ffn: int = field(init=False)
 
     def __post_init__(self):
+        if self.d_model <= 0 or self.n_heads <= 0 or self.n_layers <= 0:
+            raise ValueError("d_model, n_heads, and n_layers must be positive")
+        if self.vocab_size <= 0 or self.max_seq_len <= 0 or self.ffn_multiplier <= 0:
+            raise ValueError("vocab_size, max_seq_len, and ffn_multiplier must be positive")
         if self.d_model % self.n_heads != 0:
             raise ValueError(
                 f"d_model ({self.d_model}) must be divisible by n_heads ({self.n_heads})"
